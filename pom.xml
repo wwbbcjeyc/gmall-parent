@@ -12,6 +12,7 @@
     <modules>
         <module>gmall-common</module>
         <module>gmall-mock</module>
+        <module>gmall-logger</module>
     </modules>
 
     <parent>

@@ -17,6 +17,7 @@ public class LoggerController {
     @Autowired
     KafkaTemplate<String,String> kafkaTemplate;
 
+
     @PostMapping("/log")
     public String log(@RequestParam("logString") String logString){
 
@@ -24,7 +25,11 @@ public class LoggerController {
         JSONObject jsonObject = JSON.parseObject(logString);
         jsonObject.put("ts",System.currentTimeMillis());
 
-        log.info(logString);
+        // 1 落盘 file
+       /*String jsonString = jsonObject.toJSONString();
+        log.info(jsonObject.toJSONString());*/
+
+       //推送kafka
        if("startup".equals(jsonObject.get("type"))){
            kafkaTemplate.send(GmallConstants.KAFKA_TOPIC_STARTUP,jsonObject.toJSONString());
 
@@ -32,9 +37,6 @@ public class LoggerController {
            kafkaTemplate.send(GmallConstants.KAFKA_TOPIC_EVENT,jsonObject.toJSONString());
 
        }
-
-
-
 
         return "success";
 
