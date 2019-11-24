@@ -9,7 +9,11 @@
         <module name="gmall-common" />
         <module name="gmall-logger" />
         <module name="gmall-mock" />
+        <module name="gmall-realtime" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="gmallrealtime" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
