@@ -70,7 +70,10 @@ object DauApp {
     // 4 批次内进行去重：：按照mid 进行分组，每组取第一个值
     val groupbyMidDstream: DStream[(String, Iterable[StartUpLog])] = filteredDstream.map(startuplog=>(startuplog.mid,startuplog)).groupByKey()
     val distictDstream: DStream[StartUpLog] = groupbyMidDstream.flatMap { case (mid, startupLogItr) =>
-      startupLogItr.toList.take(1)
+      val top1List: List[StartUpLog] = startupLogItr.toList.sortWith { (startup1, startup2) =>
+        startup1.ts < startup2.ts
+      }.take(1)
+      top1List
     }
 
 
