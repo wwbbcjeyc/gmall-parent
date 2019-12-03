@@ -8,6 +8,7 @@ import com.alibaba.fastjson.JSON
 import com.xbgh.gmall.common.constants.GmallConstants
 import com.xbgh.gmall.realtime.bean.StartUpLog
 import com.xbgh.gmall.realtime.utils.{MykafkaUtil, RedisUtil}
+import org.apache.hadoop.conf.Configuration
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.spark.SparkConf
 import org.apache.spark.broadcast.Broadcast
@@ -15,7 +16,7 @@ import org.apache.spark.rdd.RDD
 import org.apache.spark.streaming.dstream.{DStream, InputDStream}
 import org.apache.spark.streaming.{Seconds, StreamingContext}
 import redis.clients.jedis.Jedis
-
+import org.apache.phoenix.spark._
 object DauApp {
 
   def main(args: Array[String]): Unit = {
@@ -76,7 +77,6 @@ object DauApp {
       top1List
     }
 
-
     // 5 保存今日访问过的用户(mid)清单   -->Redis    1 key类型 ： set    2 key ： dau:2019-xx-xx   3 value : mid
    startUplogDstream.foreachRDD{rdd=>
      //driver
@@ -91,6 +91,12 @@ object DauApp {
        jedis.close()
      }
     }
+
+    startUplogDstream.foreachRDD{rdd=>
+      rdd.saveToPhoenix("GMALL2019_DAU",Seq("MID", "UID", "APPID", "AREA", "OS", "CH", "TYPE", "VS", "LOGDATE", "LOGHOUR", "TS") ,new Configuration,Some("192.168.1.101,192.168.1.102,192.168.1.103:2181"))
+
+    }
+
 
     ssc.start()
     ssc.awaitTermination()
