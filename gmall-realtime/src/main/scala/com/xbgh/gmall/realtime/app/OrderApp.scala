@@ -18,7 +18,7 @@ object OrderApp {
 
     val ssc = new StreamingContext(sparkConf,Seconds(5))
 
-    val inputDstream: InputDStream[ConsumerRecord[String, String]] = MykafkaUtil.getKafkaStream(GmallConstants.KAFKA_TOPIC_NEW_ORDER,ssc)
+    val inputDstream: InputDStream[ConsumerRecord[String, String]] = MykafkaUtil.getKafkaStream(GmallConstants.KAFKA_TOPIC_ORDER,ssc)
 
     //    inputDstream.map(_.value()).foreachRDD(rdd=>
     //      println(rdd.collect().mkString("\n"))

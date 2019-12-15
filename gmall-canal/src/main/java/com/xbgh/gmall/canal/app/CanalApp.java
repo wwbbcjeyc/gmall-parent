@@ -14,7 +14,7 @@ public class CanalApp {
 
     public static void main(String[] args) {
         // 1 连接canal的服务端
-        CanalConnector canalConnector = CanalConnectors.newSingleConnector(new InetSocketAddress("192.168.1.101", 11111), "example", "", "");
+        CanalConnector canalConnector = CanalConnectors.newSingleConnector(new InetSocketAddress("192.168.1.103", 11111), "example", "", "");
         System.out.println(canalConnector);
         // 2 抓取数据
         while (true){

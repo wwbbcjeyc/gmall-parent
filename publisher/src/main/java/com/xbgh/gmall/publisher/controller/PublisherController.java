@@ -40,6 +40,15 @@ public class PublisherController {
 
         totalList.add(midMap);
 
+        //总交易额
+        Double orderAmount = publisherService.getOrderAmount(dateString);
+        HashMap orderAmountMap = new HashMap<>();
+        orderAmountMap.put("id","order_amount");
+        orderAmountMap.put("name","新增交易额");
+        orderAmountMap.put("value",orderAmount);
+
+        totalList.add(orderAmountMap);
+
        return JSON.toJSONString(totalList);
 
     }
@@ -51,25 +60,33 @@ public class PublisherController {
             Map dauHoursToday = publisherService.getDauHours(date);
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("today",dauHoursToday);
-            String  yesterdayDateString="";
-            try {
-                Date dateToday = new SimpleDateFormat("yyyy-MM-dd").parse(date);
-                Date dateYesterday = DateUtils.addDays(dateToday, -1);
-                yesterdayDateString=new SimpleDateFormat("yyyy-MM-dd").format(dateYesterday);
-
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            Map dauHoursYesterday = publisherService.getDauHours(yesterdayDateString);
+            String yesterday = getYesterday(date);
+            Map dauHoursYesterday = publisherService.getDauHours(yesterday);
             jsonObject.put("yesterday",dauHoursYesterday);
             return jsonObject.toJSONString();
+        }else if("order_amount".equals(id)) {
+            Map orderAmountHourTD = publisherService.getOrderAmountHour(date);
+            String yesterday = getYesterday(date);
+            Map orderAmountHourYD = publisherService.getOrderAmountHour(yesterday);
+            Map hourMap = new HashMap();
+            hourMap.put("today",orderAmountHourTD);
+            hourMap.put("yesterday",orderAmountHourYD);
+            return JSON.toJSONString(hourMap);
         }
+        return null;
+    }
 
+    private String getYesterday(String today){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-        /*if( "new_order_totalamount".equals(id)){
-            String newOrderTotalamountJson = publisherService.getNewOrderTotalAmountHours(date);
-            return newOrderTotalamountJson;
-        }*/
+        try {
+            Date todayD = simpleDateFormat.parse(today);
+            Date yesterdayD = DateUtils.addDays(todayD, -1);
+            String yesterday = simpleDateFormat.format(yesterdayD);
+            return yesterday;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
