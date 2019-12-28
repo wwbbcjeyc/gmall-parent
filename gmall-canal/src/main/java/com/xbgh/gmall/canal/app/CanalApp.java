@@ -14,12 +14,12 @@ public class CanalApp {
 
     public static void main(String[] args) {
         // 1 连接canal的服务端
-        CanalConnector canalConnector = CanalConnectors.newSingleConnector(new InetSocketAddress("192.168.1.103", 11111), "example", "", "");
+        CanalConnector canalConnector = CanalConnectors.newSingleConnector(new InetSocketAddress("192.168.1.102", 11111), "example", "", "");
         System.out.println(canalConnector);
         // 2 抓取数据
         while (true){
             canalConnector.connect();
-            canalConnector.subscribe("gmall.*");
+            canalConnector.subscribe("gmall0808.*");
             //一个message=一次抓取  一次抓取可以抓多个sql的执行结果集
             Message message = canalConnector.get(100);
             System.out.println(message);
