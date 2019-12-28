@@ -26,11 +26,11 @@ object DauApp {
     //1 消费kafka
     val inputDstream: InputDStream[ConsumerRecord[String, String]] = MykafkaUtil.getKafkaStream(GmallConstants.KAFKA_TOPIC_STARTUP,ssc)
 
-    inputDstream.foreachRDD{rdd=>
+   /* inputDstream.foreachRDD{rdd=>
       println(rdd.map(_.value()).collect().mkString("\n"))
-    }
+    }*/
 
-   /* //2 数据流 转换 结构变成case class 补充两个时间字段
+    //2 数据流 转换 结构变成case class 补充两个时间字段
     val startUplogDstream: DStream[StartUpLog] = inputDstream.map { record =>
       val jsonString: String = record.value()
       val startUpLog: StartUpLog = JSON.parseObject(jsonString, classOf[StartUpLog])
@@ -95,7 +95,7 @@ object DauApp {
     startUplogDstream.foreachRDD{rdd=>
       rdd.saveToPhoenix("GMALL2019_DAU",Seq("MID", "UID", "APPID", "AREA", "OS", "CH", "TYPE", "VS", "LOGDATE", "LOGHOUR", "TS") ,new Configuration,Some("192.168.1.101,192.168.1.102,192.168.1.103:2181"))
 
-    }*/
+    }
 
 
     ssc.start()

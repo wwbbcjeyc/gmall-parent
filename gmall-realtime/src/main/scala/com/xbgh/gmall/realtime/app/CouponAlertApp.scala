@@ -91,9 +91,9 @@ object CouponAlertApp {
     }
 
     //存储-es 提前建立index 和mapping
-    /*alterDstream.foreachRDD{rdd=>
+    alterDstream.foreachRDD{rdd=>
      println( rdd.collect().mkString("\n") )
-    }*/
+    }
     //5 存储->es   提前建好index  和 mapping
     alertInfoWithIdDstream.foreachRDD{rdd=>
       rdd.foreachPartition{alertInfoItr=>
