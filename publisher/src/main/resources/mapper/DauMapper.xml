@@ -3,17 +3,17 @@
 <mapper namespace="com.xbgh.gmall.publisher.mapper.DauMapper">
 
     <select id="selectDauTotal" parameterType="java.lang.String" resultType="java.lang.Long">
-       select count(*) ct  from gmall_dau where  logdate=#{date}
+   select   count(*) ct from gmall_dau where logDate=#{date}
+</select>
 
-    </select>
+    <select id="selectDauTotalHours"   parameterType="java.lang.String" resultMap="dau_result_map">
+      select logHour ,count(*)  ct from gmall_dau  where logDate=#{date}
+      group by logHour
+</select>
 
-    <select id="selectDauTotalHourMap" resultMap="dauTotalHour">
-        select LOGHOUR , count(*) ct from gmall_dau where  LOGDATE=#{date}
-        group by LOGHOUR
-    </select>
-
-    <resultMap id="dauTotalHour" type="java.util.Map" autoMapping="true">
+    <resultMap id="dau_result_map" type="java.util.Map" autoMapping="true">
         <result column="LOGHOUR" property="LH"></result>
+
     </resultMap>
 
 </mapper>

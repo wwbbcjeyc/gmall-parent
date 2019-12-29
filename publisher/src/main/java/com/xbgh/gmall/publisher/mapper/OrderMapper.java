@@ -7,10 +7,15 @@ public interface OrderMapper {
 
     //1 查询当日交易额总数
 
-    public Double selectOrderAmountTotal(String date);
+    public Double selectOrderAmount(String date);
 
     //2 查询当日交易额分时明细
-    public List<Map> selectOrderAmountHourMap(String date);
+    public List<Map> selectOrderAmountHour(String date);
+
+
+
+
+
 
 
 }
